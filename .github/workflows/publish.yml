@@ -47,7 +47,9 @@ jobs:
 
       - name: Install cross
         if: matrix.cross
-        run: cargo install cross --locked --version 0.2.5
+        run: |
+          cargo install cross --locked --version 0.2.5
+          which cross || echo "cross installation failed"
 
       - name: Build
         run: |

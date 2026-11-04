@@ -32,7 +32,7 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
         with:
-          toolchain: stable
+          toolchain: "1.90"
           components: rustfmt, clippy
 
       - name: Cache cargo artifacts
