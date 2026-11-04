@@ -36,7 +36,7 @@ jobs:
             libxkbcommon-dev libssl-dev
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
+        uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
 
@@ -106,7 +106,7 @@ jobs:
             libxkbcommon-dev libssl-dev
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Publish
         run: cargo publish --locked

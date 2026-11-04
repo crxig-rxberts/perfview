@@ -31,7 +31,7 @@ jobs:
             "https://x-access-token:${{ secrets.RELEASE_IT_GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Run release-it
         uses: juancarlosjr97/release-it-containerized@e71560962e77fe21d9b60836c386241392abe37e # 2.2.14
