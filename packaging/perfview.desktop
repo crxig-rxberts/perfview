@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=perfview
+GenericName=System Performance Viewer
+Comment=Watch your processor, graphics card, memory and drives in real time
+Exec=perfview
+Icon=perfview
+Terminal=false
+Categories=System;Monitor;
+Keywords=system;monitor;performance;cpu;gpu;memory;disk;task manager;
+StartupNotify=true
+StartupWMClass=dev.crxigrxberts.perfview

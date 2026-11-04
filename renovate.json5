@@ -1,0 +1,18 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>crxig-rxberts/renovate-config#0.4.55"],
+  "packageRules": [
+    {
+      "description": "Require review for privileged workflow updates",
+      "matchManagers": ["github-actions"],
+      "automerge": false,
+      "autoApprove": false
+    },
+    {
+      "description": "Group the egui stack, which must move together",
+      "matchManagers": ["cargo"],
+      "matchPackageNames": ["eframe", "egui", "egui_extras", "egui_plot"],
+      "groupName": "egui"
+    }
+  ]
+}

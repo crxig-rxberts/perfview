@@ -1,0 +1,96 @@
+name: Bug report
+description: Something in perfview is wrong, missing or crashing.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. The more detail you can give,
+        the faster it can be fixed.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the problem, and what you expected instead.
+      placeholder: The Graphics page shows "Not available" for temperature, but nvidia-smi reports 54 °C.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can it be reproduced?
+      description: Step by step, so someone else can see the same thing.
+      placeholder: |
+        1. Run `perfview`
+        2. Press 2 to open the Graphics page
+        3. Look at the temperature card
+    validations:
+      required: true
+
+  - type: dropdown
+    id: page
+    attributes:
+      label: Which page is affected?
+      multiple: true
+      options:
+        - Overview
+        - Graphics
+        - Processor
+        - Memory
+        - Storage
+        - The whole application
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: perfview version
+      description: Run `perfview --version`.
+      placeholder: perfview 0.1.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: system
+    attributes:
+      label: System details
+      description: |
+        Please paste the output of these commands. They are all read-only.
+      value: |
+        <details>
+        <summary>System details</summary>
+
+        ```
+        # Distribution and kernel
+        uname -a
+        cat /etc/os-release | head -2
+
+        # Hardware
+        lscpu | head -20
+        lspci -nn | grep -Ei 'vga|3d|display'
+        free -h
+        lsblk -d -o NAME,SIZE,MODEL,ROTA
+
+        # Session
+        echo "$XDG_SESSION_TYPE $XDG_CURRENT_DESKTOP"
+        ```
+
+        </details>
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log output
+      description: Run `RUST_LOG=perfview=debug perfview` and paste anything relevant.
+      render: shell
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: If it is a visual problem, a picture is worth a thousand words.

@@ -1,0 +1,88 @@
+[package]
+name = "perfview"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90"
+description = "A modern, human-readable live system performance viewer for Linux."
+authors = ["Craig Roberts <craig26031996@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/crxig-rxberts/perfview"
+repository = "https://github.com/crxig-rxberts/perfview"
+documentation = "https://github.com/crxig-rxberts/perfview#readme"
+keywords = ["monitoring", "system", "performance", "gpu", "linux"]
+categories = ["visualization", "command-line-utilities"]
+exclude = ["/.github", "/docs", "/packaging", "/assets/screenshots"]
+
+[dependencies]
+anyhow = "1.0.104"
+chrono = { version = "0.4.45", default-features = false, features = ["clock"] }
+clap = { version = "4.6.7", features = ["derive"] }
+eframe = { version = "0.37.0", default-features = false, features = [
+  "default_fonts",
+  "glow",
+  "persistence",
+  "wayland",
+  "x11",
+] }
+egui = "0.37.0"
+egui_extras = { version = "0.37.0", features = ["image"] }
+egui_plot = "0.38.0"
+parking_lot = "0.13.0"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+sysinfo = "0.40.1"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+nvml-wrapper = "0.13.0"
+
+[profile.release]
+codegen-units = 1
+lto = "thin"
+panic = "abort"
+strip = "symbols"
+
+[profile.dist]
+inherits = "release"
+opt-level = 3
+
+[package.metadata.deb]
+maintainer = "Craig Roberts <craig26031996@gmail.com>"
+copyright = "2026, Craig Roberts <craig26031996@gmail.com>"
+license-file = ["LICENSE", "0"]
+extended-description = """\
+perfview is a live system performance viewer for Linux. It shows processor, \
+graphics card, memory and storage activity in real time, translating every \
+reading into plain English rather than raw kernel counters."""
+section = "utils"
+priority = "optional"
+assets = [
+  ["target/x86_64-unknown-linux-gnu/dist/perfview", "usr/bin/", "755"],
+  ["packaging/perfview.desktop", "usr/share/applications/", "644"],
+  ["README.md", "usr/share/doc/perfview/README.md", "644"],
+]
+
+
+[lints.rust]
+missing_debug_implementations = "warn"
+unsafe_code = "forbid"
+unreachable_pub = "warn"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+cast_possible_truncation = "allow"
+cast_precision_loss = "allow"
+cast_sign_loss = "allow"
+# Our doc comments are deliberately plain English prose, not API jargon.
+doc_markdown = "allow"
+items_after_statements = "allow"
+match_same_arms = "allow"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+struct_excessive_bools = "allow"
+too_many_lines = "allow"

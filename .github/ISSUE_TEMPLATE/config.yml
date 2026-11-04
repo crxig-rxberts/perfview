@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Hardware support request
+    url: https://github.com/crxig-rxberts/perfview/issues/new?template=bug_report.yml
+    about: A sensor on your machine is not being read. Open a bug report with your system details.
+  - name: Questions and ideas
+    url: https://github.com/crxig-rxberts/perfview/discussions
+    about: Ask a question or talk through an idea before opening an issue.

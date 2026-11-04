@@ -1,0 +1,61 @@
+name: Feature request
+description: Suggest a new reading, page or improvement.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        perfview has one guiding rule: **every number must be readable by a
+        human who is not a kernel developer.** Suggestions that help with that
+        are especially welcome.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the situation where perfview falls short today.
+      placeholder: When my game stutters I cannot tell whether it is the drive or the graphics card.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to see?
+      description: Describe the reading, page or behaviour you have in mind.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area does this belong to?
+      options:
+        - Overview
+        - Graphics
+        - Processor
+        - Memory
+        - Storage
+        - Appearance and usability
+        - Packaging and installation
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: wording
+    attributes:
+      label: How should it be worded?
+      description: |
+        If you are proposing a new reading, suggest the plain-English label and
+        the one-line explanation that should sit beside it.
+      placeholder: |
+        Label: "Time to answer a read"
+        Explanation: "Average wait for a read to complete. A fast solid state
+        drive answers in well under a millisecond."
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Anything else?
+      description: Alternatives you have considered, other tools that do this well, links.

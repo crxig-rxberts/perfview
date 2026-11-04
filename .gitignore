@@ -1,0 +1,9 @@
+/target/
+/dist/
+
+# Screenshot capture scratch file.
+perfview-load.bin
+
+# Editor and OS noise
+.DS_Store
+*.swp
