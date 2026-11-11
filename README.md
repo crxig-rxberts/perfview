@@ -2,126 +2,95 @@
 
 # perfview
 
-A live system performance viewer for Linux.
+**Live Linux performance, in plain English.**
 
-[![CI](https://github.com/crxig-rxberts/perfview/actions/workflows/ci.yml/badge.svg)](https://github.com/crxig-rxberts/perfview/actions/workflows/ci.yml)
-[![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
-[![Rust](https://img.shields.io/badge/rust-1.95%2B-orange.svg)](https://www.rust-lang.org)
-[![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)](#requirements)
+[![Release](https://img.shields.io/github/v/release/crxig-rxberts/perfview.svg?style=flat-square&label=release)](https://github.com/crxig-rxberts/perfview/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/crxig-rxberts/perfview/total.svg?style=flat-square)](https://github.com/crxig-rxberts/perfview/releases)
+[![CI](https://img.shields.io/github/actions/workflow/status/crxig-rxberts/perfview/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/crxig-rxberts/perfview/actions/workflows/ci.yml)
+[![Security checks](https://img.shields.io/github/actions/workflow/status/crxig-rxberts/perfview/security-analysis.yml?branch=main&style=flat-square&label=security)](https://github.com/crxig-rxberts/perfview/actions/workflows/security-analysis.yml)
+
+[![Rust](https://img.shields.io/badge/Rust-1.95%2B-orange.svg?style=flat-square&logo=rust)](https://www.rust-lang.org)
+[![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg?style=flat-square&logo=linux)](#requirements)
+[![Architecture](https://img.shields.io/badge/arch-x86--64%20%7C%20ARM64-blue.svg?style=flat-square)](#requirements)
+[![Licence](https://img.shields.io/badge/licence-MIT-blue.svg?style=flat-square)](LICENSE)
+
+[Install](#installation) · [Explore the pages](#pages) · [Screenshots](#screenshots) · [Contribute](#contributing)
 
 <br />
 
-<img src="docs/screenshots/01-overview.png" alt="The perfview Overview page" width="100%" />
+<img src="docs/screenshots/01-overview.png" alt="perfview Overview: live system load, component summaries, drive and network activity, and busiest processes" width="100%" />
+
+<strong>No telemetry · No network access · No root required</strong>
 
 </div>
 
 ---
 
-perfview reports processor, graphics, memory, storage and network activity in
-real time, across five pages. Readings are labelled in full sentences and
-converted to familiar units, and each one has a hover hint describing what it
-measures. Sensors that cannot be read are reported as unavailable rather than
-shown as zero.
+perfview is a graphical system performance viewer for Linux, covering
+**processor, graphics, memory, storage and network activity** across five live
+pages. Readings use full-sentence labels, familiar units and explanatory hover
+hints. Unreadable sensors are reported as **unavailable**, never as zero.
 
-It is a graphical application built with [egui](https://github.com/emilk/egui),
-and ships as a single binary that depends only on libc.
+Built with [egui](https://github.com/emilk/egui), it ships as a single binary
+that depends only on libc.
 
 ## Contents
 
-- [Features](#features)
-- [Screenshots](#screenshots)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Pages](#pages)
-- [Requirements](#requirements)
-- [Performance](#performance)
-- [Project layout](#project-layout)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [Licence](#licence)
+[Features](#features) · [Installation](#installation) · [Usage](#usage) ·
+[Screenshots](#screenshots) · [Pages](#pages) · [Requirements](#requirements) ·
+[Performance](#performance) · [Project layout](#project-layout) ·
+[Troubleshooting](#troubleshooting) · [Contributing](#contributing) · [Licence](#licence)
 
 ## Features
 
-- Five pages: Overview, Graphics, Processor, Memory and Storage.
-- Live area charts with a configurable window of 30 seconds to 15 minutes.
-  Hovering a chart reads out the value and how long ago it was recorded.
-- NVIDIA cards are read through NVML, giving per-process video memory, PCIe
-  throughput, encoder and decoder load, clock domains, power limits and the
-  driver's reported throttle reasons.
-- AMD and Intel graphics are read through the kernel's `amdgpu` and `i915`
-  sysfs interfaces.
-- Per-thread processor load, split by user, kernel and I/O wait time.
-- Memory broken down into programs, file cache, shared memory, disk buffers,
-  kernel structures and free.
-- Per-drive throughput, IOPS, utilisation, queue depth, latency and temperature,
-  plus capacity for each mounted filesystem.
-- Process tables ranked by processor, memory or disk activity.
-- Dark and light themes, adjustable interface scale, and a freeze control.
-- Sampling runs on a background thread. The window repaints only when new data
-  arrives.
-- No network access, no telemetry, no root required, and `unsafe` code is
-  forbidden at the crate level.
-
-## Screenshots
-
-### Overview
-
-Headline figures for each subsystem, a combined load chart, per-component
-summaries, drive and network activity, and the busiest processes.
-
-<img src="docs/screenshots/01-overview.png" alt="Overview page" width="100%" />
-
-### Graphics
-
-Load, video memory, clock domains, thermals, power, PCIe link state and
-throughput, the driver's throttle reasons, and the processes holding video
-memory.
-
-<img src="docs/screenshots/02-graphics.png" alt="Graphics page" width="100%" />
-
-### Processor
-
-Load broken down by the kind of work, a tile per logical processor, clock
-speeds, temperature sensors, cache sizes and scheduler counters.
-
-<img src="docs/screenshots/03-processor.png" alt="Processor page" width="100%" />
-
-### Memory
-
-Composition of physical memory, swap usage and activity, page fault and
-writeback rates, commit accounting, and installed memory modules.
-
-<img src="docs/screenshots/04-memory.png" alt="Memory page" width="100%" />
-
-### Storage
-
-Combined and per-drive throughput, utilisation, queue depth, latency, drive
-details and filesystem capacity.
-
-<img src="docs/screenshots/05-storage.png" alt="Storage page" width="100%" />
+| Area | What you get |
+| --- | --- |
+| **Five live pages** | Overview, Graphics, Processor, Memory and Storage, with network activity on Overview. |
+| **Charts** | Area charts with 30-second to 15-minute history; hover for a value and its age. |
+| **Graphics** | NVIDIA telemetry through NVML: per-process video memory, PCIe throughput, encoder/decoder load, clock domains, power limits and driver throttle reasons. AMD and Intel support through `amdgpu` and `i915` sysfs. |
+| **Processor** | Per-thread load split into user, kernel and I/O wait time. |
+| **Memory** | Programs, file cache, shared memory, disk buffers, kernel structures and free memory. |
+| **Storage** | Per-drive throughput, IOPS, utilisation, queue depth, latency and temperature; capacity for each mounted filesystem. |
+| **Processes** | Tables ranked by processor, memory or disk activity. |
+| **Interface** | Dark and light themes, adjustable scale and a freeze control. |
+| **Low overhead** | Background sampling; the window repaints only when new data arrives. |
+| **Privacy and safety** | No network access, telemetry or root requirement. Crate-level `unsafe` code is forbidden. |
 
 ## Installation
 
-### Release builds
-
-Download from the [releases page](https://github.com/crxig-rxberts/perfview/releases).
-Each asset is published with a `.sha256` checksum.
-
-```bash
-# Debian, Ubuntu and derivatives
-curl -LO https://github.com/crxig-rxberts/perfview/releases/latest/download/perfview_0.1.0_amd64.deb
-sudo apt install ./perfview_0.1.0_amd64.deb
-
-# Portable tarball
-curl -L https://github.com/crxig-rxberts/perfview/releases/latest/download/perfview-0.1.0-x86_64-unknown-linux-gnu.tar.gz | tar xz
-sudo install -m 755 perfview-*/perfview /usr/local/bin/
-```
-
 ### Cargo
+
+With Rust and the [build dependencies](#building) installed:
 
 ```bash
 cargo install perfview --locked
+perfview
 ```
+
+### Release builds
+
+Download a **Debian package** or **portable tarball** from the
+[releases page](https://github.com/crxig-rxberts/perfview/releases/latest).
+Tarballs are available for x86-64 and ARM64; the Debian package is x86-64.
+Each asset includes a `.sha256` checksum.
+
+<details>
+<summary><strong>Install a release from the terminal (x86-64)</strong></summary>
+
+These examples use v0.1.2. Match the filenames to the latest release.
+
+```bash
+# Debian, Ubuntu and derivatives
+curl -fLO https://github.com/crxig-rxberts/perfview/releases/download/v0.1.2/perfview_0.1.2_amd64.deb
+sudo apt install ./perfview_0.1.2_amd64.deb
+
+# Portable tarball
+curl -fLO https://github.com/crxig-rxberts/perfview/releases/download/v0.1.2/perfview-0.1.2-x86_64-unknown-linux-gnu.tar.gz
+tar xzf perfview-0.1.2-x86_64-unknown-linux-gnu.tar.gz
+sudo install -m 755 perfview-0.1.2-x86_64-unknown-linux-gnu/perfview /usr/local/bin/
+```
+
+</details>
 
 ### From source
 
@@ -182,10 +151,68 @@ perfview --fresh --theme daylight --scale 1.25
 Settings changed in the application are saved and restored on the next run.
 `--fresh` ignores them.
 
-## Pages
+## Screenshots
+
+Expand a page to preview it. The Overview is also shown at the top of this README.
 
 <details>
-<summary>Overview</summary>
+<summary><strong>Overview</strong> — system summary, network activity and busiest processes</summary>
+
+Headline figures for each subsystem, a combined load chart, per-component
+summaries, drive and network activity, and the busiest processes.
+
+<img src="docs/screenshots/01-overview.png" alt="Overview page: system summary, charts and busiest processes" width="100%" />
+
+</details>
+
+<details>
+<summary><strong>Graphics</strong> — load, video memory, thermals and power</summary>
+
+Load, video memory, clock domains, thermals, power, PCIe link state and
+throughput, the driver's throttle reasons, and the processes holding video
+memory.
+
+<img src="docs/screenshots/02-graphics.png" alt="Graphics page: GPU load, video memory, thermals, power and PCIe telemetry" width="100%" />
+
+</details>
+
+<details>
+<summary><strong>Processor</strong> — per-thread load, clocks and temperatures</summary>
+
+Load broken down by the kind of work, a tile per logical processor, clock
+speeds, temperature sensors, cache sizes and scheduler counters.
+
+<img src="docs/screenshots/03-processor.png" alt="Processor page: per-thread load, clock speeds and temperature sensors" width="100%" />
+
+</details>
+
+<details>
+<summary><strong>Memory</strong> — memory composition, swap and installed modules</summary>
+
+Composition of physical memory, swap usage and activity, page fault and
+writeback rates, commit accounting, and installed memory modules.
+
+<img src="docs/screenshots/04-memory.png" alt="Memory page: physical memory composition, swap activity and installed modules" width="100%" />
+
+</details>
+
+<details>
+<summary><strong>Storage</strong> — drive activity, latency and filesystem capacity</summary>
+
+Combined and per-drive throughput, utilisation, queue depth, latency, drive
+details and filesystem capacity.
+
+<img src="docs/screenshots/05-storage.png" alt="Storage page: drive throughput, utilisation, latency and filesystem capacity" width="100%" />
+
+</details>
+
+## Pages
+
+Detailed readings by page. Sensor availability depends on your hardware,
+drivers and permissions; see [Requirements](#requirements).
+
+<details>
+<summary><strong>Overview</strong></summary>
 
 - Headline figures for processor, graphics, memory and storage
 - Combined load chart for processor, graphics and memory
@@ -197,7 +224,7 @@ Settings changed in the application are saved and restored on the next run.
 </details>
 
 <details>
-<summary>Graphics</summary>
+<summary><strong>Graphics</strong></summary>
 
 - Graphics load, memory bus load, encoder and decoder load
 - Video memory used, free and total
@@ -215,7 +242,7 @@ Settings changed in the application are saved and restored on the next run.
 </details>
 
 <details>
-<summary>Processor</summary>
+<summary><strong>Processor</strong></summary>
 
 - Load split into user, kernel and I/O wait time
 - A tile per logical processor, with per-thread clock speed on hover
@@ -232,7 +259,7 @@ Settings changed in the application are saved and restored on the next run.
 </details>
 
 <details>
-<summary>Memory</summary>
+<summary><strong>Memory</strong></summary>
 
 - Composition bar covering programs, file cache, shared memory, disk buffers,
   kernel structures and free memory
@@ -248,7 +275,7 @@ Settings changed in the application are saved and restored on the next run.
 </details>
 
 <details>
-<summary>Storage</summary>
+<summary><strong>Storage</strong></summary>
 
 - Combined read and write throughput, with peaks
 - Every mounted filesystem with a capacity bar, flagged above 90% full
@@ -265,8 +292,11 @@ Settings changed in the application are saved and restored on the next run.
 
 ### Running
 
-- Linux on x86-64 or ARM64
-- An X11 or Wayland session with OpenGL 3.3 or newer
+| Requirement | Supported |
+| --- | --- |
+| Operating system | Linux |
+| Architecture | x86-64 or ARM64 |
+| Display | X11 or Wayland with OpenGL 3.3 or newer |
 
 No root access is required. Two readings are root-only on most distributions —
 the processor's RAPL energy counter and the per-module memory details from DMI —
@@ -314,7 +344,8 @@ Measured on a Ryzen 7 5800X with an RTX 5070 Ti and roughly 230 running
 processes. The live figure is also shown in the bottom-left corner of the
 application.
 
-Notes on how that cost is kept down:
+<details>
+<summary><strong>How sampling overhead is kept low</strong></summary>
 
 - Sampling runs on a background thread, so a slow sysfs read cannot delay a
   frame.
@@ -333,7 +364,15 @@ Notes on how that cost is kept down:
   every sample.
 - The window repaints only when a new sample arrives.
 
+</details>
+
 ## Project layout
+
+Raw data collection and presentation are kept separate: `metrics` handles
+readings; `ui` handles formatting and display.
+
+<details>
+<summary><strong>Source tree and architecture</strong></summary>
 
 ```text
 src/
@@ -364,6 +403,8 @@ Built with [egui](https://github.com/emilk/egui) and
 [eframe](https://github.com/emilk/egui/tree/master/crates/eframe),
 [sysinfo](https://github.com/GuillaumeGomez/sysinfo) and
 [nvml-wrapper](https://github.com/Cldfire/nvml-wrapper).
+
+</details>
 
 ## Troubleshooting
 
