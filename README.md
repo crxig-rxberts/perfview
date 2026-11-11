@@ -6,7 +6,7 @@ A live system performance viewer for Linux.
 
 [![CI](https://github.com/crxig-rxberts/perfview/actions/workflows/ci.yml/badge.svg)](https://github.com/crxig-rxberts/perfview/actions/workflows/ci.yml)
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
-[![Rust](https://img.shields.io/badge/rust-1.90%2B-orange.svg)](https://www.rust-lang.org)
+[![Rust](https://img.shields.io/badge/rust-1.95%2B-orange.svg)](https://www.rust-lang.org)
 [![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)](#requirements)
 
 <br />

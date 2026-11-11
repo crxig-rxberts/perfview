@@ -1,6 +1,13 @@
 name: publish
 
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/publish.yml"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "packaging/**"
+  workflow_dispatch:
   push:
     tags: ["v*"]
 
@@ -14,16 +21,18 @@ jobs:
   binaries:
     name: Build ${{ matrix.target }}
     if: github.repository == 'crxig-rxberts/perfview'
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: write
     timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu
-            cross: false
+            runner: ubuntu-latest
           - target: aarch64-unknown-linux-gnu
-            cross: true
+            runner: ubuntu-24.04-arm
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -36,7 +45,7 @@ jobs:
             libxkbcommon-dev libssl-dev
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
         with:
           targets: ${{ matrix.target }}
 
@@ -45,26 +54,24 @@ jobs:
         with:
           key: ${{ matrix.target }}
 
-      - name: Install cross
-        if: matrix.cross
-        run: cargo install cross --locked --version 0.2.5
-
       - name: Build
-        run: |
-          if [ "${{ matrix.cross }}" = "true" ]; then
-            cross build --profile dist --target ${{ matrix.target }} --locked
-          else
-            cargo build --profile dist --target ${{ matrix.target }} --locked
-          fi
+        run: cargo build --profile dist --target ${{ matrix.target }} --locked
+
+      - name: Confirm the binary runs
+        run: ./target/${{ matrix.target }}/dist/perfview --help
 
       - name: Package tarball
         id: package
         run: |
-          version="${GITHUB_REF_NAME#v}"
+          version=$(sed -n '/^\[package\]/,/^\[/s/^version = "\(.*\)"/\1/p' Cargo.toml)
+          if [[ "$GITHUB_REF" == refs/tags/* && "$GITHUB_REF_NAME" != "v${version}" ]]; then
+            echo "::error::Release tag does not match Cargo.toml version ${version}."
+            exit 1
+          fi
           staging="perfview-${version}-${{ matrix.target }}"
           mkdir -p "dist/${staging}"
           cp "target/${{ matrix.target }}/dist/perfview" "dist/${staging}/"
-          cp README.md LICENSE CHANGELOG.md "dist/${staging}/" 2>/dev/null || true
+          cp README.md LICENSE CHANGELOG.md "dist/${staging}/"
           cp packaging/perfview.desktop "dist/${staging}/"
           tar -czf "dist/${staging}.tar.gz" -C dist "${staging}"
           (cd dist && sha256sum "${staging}.tar.gz" > "${staging}.tar.gz.sha256")
@@ -80,7 +87,8 @@ jobs:
             > "perfview_${{ steps.package.outputs.version }}_amd64.deb.sha256")
 
       - name: Upload release assets
-        uses: softprops/action-gh-release@f2df91e00f4e4d9a5b8ca0f5e9aa4edef90e7e95 # v2
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           files: |
             dist/*.tar.gz
@@ -106,9 +114,19 @@ jobs:
             libxkbcommon-dev libssl-dev
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
 
       - name: Publish
-        run: cargo publish --locked
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          if [ -z "$CARGO_REGISTRY_TOKEN" ]; then
+            echo "::error::Configure the CARGO_REGISTRY_TOKEN repository secret."
+            exit 1
+          fi
+          cargo publish --locked
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      - name: Verify crate packaging
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        run: cargo publish --dry-run --locked

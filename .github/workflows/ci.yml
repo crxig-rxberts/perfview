@@ -30,7 +30,7 @@ jobs:
             libxkbcommon-dev libssl-dev
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
         with:
           toolchain: stable
           components: rustfmt, clippy
@@ -60,7 +60,7 @@ jobs:
           - name: stable
             toolchain: stable
           - name: minimum supported Rust version
-            toolchain: "1.90"
+            toolchain: "1.95"
           - name: beta
             toolchain: beta
     steps:
@@ -75,7 +75,7 @@ jobs:
             libxkbcommon-dev libssl-dev
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
         with:
           toolchain: ${{ matrix.toolchain }}
 
@@ -106,7 +106,7 @@ jobs:
             libxkbcommon-dev libssl-dev
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
 
       - name: Cache cargo artifacts
         uses: Swatinem/rust-cache@98c8021b550208e191a6a3145459bfc9fb29c4c0 # v2
@@ -118,7 +118,7 @@ jobs:
         run: ./target/release/perfview --help
 
   markdown:
-    name: Lint documentation
+    name: Check documentation and release tooling
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -127,3 +127,6 @@ jobs:
 
       - name: Lint Markdown
         run: npx --yes markdownlint-cli2@0.24.0
+
+      - name: Test release lockfile synchronization
+        run: node --test scripts/sync-lock-version.test.mjs
