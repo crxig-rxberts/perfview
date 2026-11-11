@@ -2,7 +2,7 @@
 
 # perfview
 
-**Live Linux performance, in plain English.**
+**Live Linux performance.**
 
 [![Release](https://img.shields.io/github/v/release/crxig-rxberts/perfview.svg?style=flat-square&label=release)](https://github.com/crxig-rxberts/perfview/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/crxig-rxberts/perfview/total.svg?style=flat-square)](https://github.com/crxig-rxberts/perfview/releases)
