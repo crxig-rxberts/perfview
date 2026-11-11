@@ -290,7 +290,7 @@ sudo dnf install gcc gtk3-devel libxcb-devel libxkbcommon-devel openssl-devel
 sudo pacman -S base-devel gtk3 libxcb libxkbcommon openssl
 ```
 
-Minimum supported Rust version is 1.90, checked in CI.
+Minimum supported Rust version is 1.95, checked in CI.
 
 ## Performance
 
