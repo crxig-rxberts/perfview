@@ -3,6 +3,12 @@
 All notable changes to perfview are recorded here.
 
 
+## [0.1.2](https://github.com/crxig-rxberts/perfview/compare/v0.1.1...v0.1.2) (2026-11-11)
+
+### Continuous Integration
+
+* markdownlint to ignore changelog ([52d7e9d](https://github.com/crxig-rxberts/perfview/commit/52d7e9dd57fb2a47a186eb975c85903328cc5ab1))
+
 ## 0.1.1 (2026-11-11)
 
 ### Bug Fixes
