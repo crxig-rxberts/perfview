@@ -3,6 +3,12 @@
 All notable changes to perfview are recorded here.
 
 
+## [0.1.4](https://github.com/crxig-rxberts/perfview/compare/v0.1.3...v0.1.4) (2026-11-11)
+
+### Documentation
+
+* Update  README.md ([9dbd224](https://github.com/crxig-rxberts/perfview/commit/9dbd224ecc2f3d12ca521aa1e650b4dc6cf825cd))
+
 ## [0.1.3](https://github.com/crxig-rxberts/perfview/compare/v0.1.2...v0.1.3) (2026-11-11)
 
 ### Documentation
