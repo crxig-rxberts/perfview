@@ -80,7 +80,7 @@ fn reads_physical_drives_and_their_filesystems() {
     let drives = sampler.sample(SETTLE.as_secs_f64(), &volumes);
 
     for drive in &drives {
-        assert!(!drive.name.is_empty());
+        assert_ne!(drive.name, "");
         assert!(drive.size_bytes > 0, "{} reported a zero size", drive.name);
         assert!(
             (0.0..=100.0).contains(&drive.busy_percent),
@@ -100,7 +100,7 @@ fn reads_physical_drives_and_their_filesystems() {
         assert!(volume.total_bytes > 0);
         assert!(volume.used_bytes <= volume.total_bytes);
         assert!((0.0..=100.0).contains(&volume.used_percent()));
-        assert!(!volume.friendly_name().is_empty());
+        assert_ne!(volume.friendly_name(), "");
     }
 }
 
@@ -115,7 +115,7 @@ fn reads_network_interfaces_including_loopback() {
     assert!(interfaces.iter().any(|i| i.is_loopback), "loopback should be present");
 
     for interface in &interfaces {
-        assert!(!interface.name.is_empty());
+        assert_ne!(interface.name, "");
         assert!(!interface.kind.is_empty(), "every interface should be classified in words");
         assert!(interface.rx_bytes_per_sec >= 0.0);
         assert!(interface.tx_bytes_per_sec >= 0.0);
@@ -126,9 +126,9 @@ fn reads_network_interfaces_including_loopback() {
 fn identifies_the_machine() {
     let system = SystemSampler::new().sample();
 
-    assert!(!system.hostname.is_empty());
-    assert!(!system.kernel_version.is_empty());
-    assert!(!system.distribution.is_empty());
+    assert_ne!(system.hostname, "");
+    assert_ne!(system.kernel_version, "");
+    assert_ne!(system.distribution, "");
     assert!(system.uptime_secs > 0, "the machine has clearly been running for a moment");
     assert!(system.boot_time.is_some(), "boot time should be derivable from uptime");
 }
@@ -141,7 +141,7 @@ fn gpu_detection_never_panics_without_a_driver() {
     let gpus = sampler.sample(1.0);
 
     for gpu in &gpus {
-        assert!(!gpu.name.is_empty());
+        assert_ne!(gpu.name, "");
         if let Some(utilization) = gpu.utilization_percent {
             assert!((0.0..=100.0).contains(&utilization));
         }

@@ -80,7 +80,7 @@ jobs:
       - name: Build Debian package
         if: matrix.target == 'x86_64-unknown-linux-gnu'
         run: |
-          cargo install cargo-deb --locked --version 2.14.1
+          cargo install cargo-deb --locked --version 3.8.0
           cargo deb --profile dist --target ${{ matrix.target }} --no-build \
             --output "dist/perfview_${{ steps.package.outputs.version }}_amd64.deb"
           (cd dist && sha256sum "perfview_${{ steps.package.outputs.version }}_amd64.deb" \
