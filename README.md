@@ -6,7 +6,7 @@ A live system performance viewer for Linux.
 
 [![CI](https://github.com/crxig-rxberts/perfview/actions/workflows/ci.yml/badge.svg)](https://github.com/crxig-rxberts/perfview/actions/workflows/ci.yml)
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
-[![Rust](https://img.shields.io/badge/rust-1.90%2B-orange.svg)](https://www.rust-lang.org)
+[![Rust](https://img.shields.io/badge/rust-1.95%2B-orange.svg)](https://www.rust-lang.org)
 [![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)](#requirements)
 
 <br />
@@ -290,7 +290,7 @@ sudo dnf install gcc gtk3-devel libxcb-devel libxkbcommon-devel openssl-devel
 sudo pacman -S base-devel gtk3 libxcb libxkbcommon openssl
 ```
 
-Minimum supported Rust version is 1.90, checked in CI.
+Minimum supported Rust version is 1.95, checked in CI.
 
 ## Performance
 

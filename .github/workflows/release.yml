@@ -18,6 +18,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Check release credentials
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_IT_GITHUB_TOKEN }}
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+        run: |
+          if [ -z "$RELEASE_TOKEN" ] || [ -z "$GIT_EMAIL" ] || [ -z "$GIT_USERNAME" ]; then
+            echo "::error::Configure RELEASE_IT_GITHUB_TOKEN, GIT_EMAIL and GIT_USERNAME repository secrets."
+            exit 1
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -30,9 +41,6 @@ jobs:
           git remote set-url origin \
             "https://x-access-token:${{ secrets.RELEASE_IT_GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb00c93b4d84f5432c38bd # stable
-
       - name: Run release-it
         uses: juancarlosjr97/release-it-containerized@e71560962e77fe21d9b60836c386241392abe37e # 2.2.14
         with:
@@ -40,3 +48,4 @@ jobs:
           git_username: ${{ secrets.GIT_USERNAME }}
           github_token: ${{ secrets.RELEASE_IT_GITHUB_TOKEN }}
           plugins_list: "@release-it/conventional-changelog,@release-it/bumper"
+          command: "--config .release-it.mjs"

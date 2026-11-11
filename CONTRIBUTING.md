@@ -23,7 +23,7 @@ formatting a number anywhere else, it probably belongs there.
 
 ## Getting set up
 
-You will need a recent stable Rust toolchain (1.90 or newer) and the usual
+You will need a recent stable Rust toolchain (1.95 or newer) and the usual
 Linux GUI development packages.
 
 ```bash
@@ -156,6 +156,26 @@ docs(readme): explain why cached memory counts as free
 
 Merging to `main` bumps the version, writes the changelog, tags the release and
 builds the binaries.
+
+## Release credentials
+
+Release automation follows the same PAT-based release-it setup as
+`crxig-rxberts/code-standards` and `crxig-rxberts/renovate-config`.
+Configure these repository secrets before merging:
+
+- `RELEASE_IT_GITHUB_TOKEN`: a PAT with repository contents read/write access
+  and permission to update workflow files. Unlike `GITHUB_TOKEN`, its tag
+  pushes trigger the publishing workflow.
+- `GIT_EMAIL` and `GIT_USERNAME`: the release commit identity.
+- `CARGO_REGISTRY_TOKEN`: a crates.io token with permission to publish perfview.
+
+The release hook updates only perfview's version in `Cargo.lock` using Node.js,
+because the release-it container does not include Rust. Dependency versions and
+checksums remain unchanged.
+
+Publishing builds run on native x86-64 and ARM64 runners. Pull requests that
+change packaging and manual workflow runs verify packages without creating a
+release or uploading to crates.io; only version tags publish.
 
 ## Code of conduct
 

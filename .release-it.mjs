@@ -24,7 +24,7 @@ export default {
   },
   hooks: {
     // Keep Cargo.lock's recorded version in step with Cargo.toml.
-    "after:bump": "cargo update --workspace --offline",
+    "after:bump": "node scripts/sync-lock-version.mjs ${version}",
   },
   plugins: {
     "@release-it/conventional-changelog": {
@@ -46,6 +46,7 @@ export default {
       },
     },
     "@release-it/bumper": {
+      in: { file: "Cargo.toml", path: "package.version" },
       out: [{ file: "Cargo.toml", path: "package.version" }],
     },
   },
