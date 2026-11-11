@@ -14,5 +14,5 @@ export default {
     MD041: false,
   },
   globs: ["**/*.md"],
-  ignores: ["target/**", "node_modules/**"],
+  ignores: ["target/**", "node_modules/**", "CHANGELOG.md"],
 };
